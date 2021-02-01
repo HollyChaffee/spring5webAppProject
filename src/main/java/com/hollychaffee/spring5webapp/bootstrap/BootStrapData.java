@@ -44,19 +44,35 @@ public class BootStrapData implements CommandLineRunner {  //CommandLineRunner i
         eric.getBooks().add(ddd);  // Get the book and add the title
         ddd.getAuthors().add(eric);  // Get the author and add Eric as an author of the book
 
+        ddd.setPublisher(publisher);
+        publisher.getBooks().add(ddd);
+
         authorRepository.save(eric);  // Spring managed component has two properties (authorRepository and bookRepository) initialized inside the constructor as final variables
         bookRepository.save(ddd);  // Saves these into the h2 database. Tells the Spring Framework that it must inject an instance of these repositories
+        publisherRepository.save(publisher);
 
         Author rod = new Author("Rod", "Johnson");  // Adding another author
         Book noEJB = new Book("J2EE Development without EJB", "3939459459");  // Adding another book
         rod.getBooks().add(noEJB);  // Get the book, add the title
         noEJB.getAuthors().add(rod);  // Get the author, add the author
 
+        noEJB.setPublisher(publisher);
+        publisher.getBooks().add(noEJB);
+
         authorRepository.save(rod);
         bookRepository.save(noEJB);  // Spring data JPA is utilizing Hibernate to save these to an in-memory h2 database.
-
+        publisherRepository.save(publisher);
 
         System.out.println("Number of Books: " + bookRepository.count());
-
+        System.out.println("Publisher Number of Books: " + publisher.getBooks().size());
     }
 }
+
+// Hibernate is generating the SQL (Structured Query Language), DDL (Data Definition Language) statements to go out and
+// create the database tables based on our JPA (Java Persistence API) definitions.
+
+// Our Entities are being persisted to an in-memory h2 database.
+
+// By looking at the logs, we can see that Hibernate is initializing the database and generating the SQL statements
+// based on the Entities we have created. When we populate the Entities and save them, Hibernate is creating the SQL
+// statements to insert the data for us.

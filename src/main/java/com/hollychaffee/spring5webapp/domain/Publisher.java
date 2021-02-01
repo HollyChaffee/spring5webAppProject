@@ -1,16 +1,15 @@
 package com.hollychaffee.spring5webapp.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Publisher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Tells Hibernate how it's being persisted.
-    // The strategy is GenerationType of AUTo meaning that the underlying database will handle it.
+    // The strategy is GenerationType of AUTO meaning that the underlying database will handle it.
     private Long id;
     private String name;
     private String addressLine1;
@@ -18,7 +17,21 @@ public class Publisher {
     private String state;
     private String zip;
 
+    @OneToMany  //Annotation-the publisher is one and it has many books
+    @JoinColumn(name = "publisher_id")  // Telling Hibernate to add in a publisher id to the book record to track the publisher.
+    // This will create a Foreign Key relationship-defined between the Orders table and the Customers table to ensure
+    // that an order can't be created unless there is a corresponding customer.
+    private Set<Book> books = new HashSet<>();
+
     public Publisher() {  // JPA requires a no args constructor
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
     @Override

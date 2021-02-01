@@ -9,13 +9,14 @@ public class Book {
 
     @Id
     @GeneratedValue
-
     private Long id;
     private String title;
     private String isbn;
 
-    @ManyToMany                       // Hibernate annotation used to create the relationship between author and book entities.
-                                      // An author can be the author of many books and books can have many authors.
+    @ManyToOne   // Many publishers but only coming to one Entity
+    private Publisher publisher;
+
+    @ManyToMany  // Hibernate annotation used to create the relationship between author and book. An author can be the author of many books and books can have many authors.
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))  // Hibernate annotation-joins (links) the two tables author and book. Setting up the properties within the join table.
     private Set<Author> authors = new HashSet<>();
@@ -27,6 +28,14 @@ public class Book {
         this.title = title;
         this.isbn = isbn;
 
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 
     public Long getId() {
