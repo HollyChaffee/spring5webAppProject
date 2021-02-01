@@ -20,6 +20,6 @@ public class BookController {
         model.addAttribute("books", bookRepository.findAll());  // At runtime, when Spring gets a request to the URL/books it will execute the getBooks
         // method and provide that method a model object. Will give us a list of books. Model gets returned back to the view layer with the
         // attribute "books" and a list of books. We then will be able to utilize that value inside the view layer to apply the necessary view to be returned back to the client.
-        return "books";
+        return "books/list";
     }
 }
